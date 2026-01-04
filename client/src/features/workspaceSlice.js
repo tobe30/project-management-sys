@@ -13,6 +13,8 @@ export const fetchWorkspaces = createAsyncThunk(
         },
       });
 
+      console.log("fetchWorkspaces API response:", data);
+    //return Array.isArray(data) ? data : [data]; 
       return data.workspaces || [];
     } catch (error) {
       console.log(error?.response?.data?.message || error.message);
