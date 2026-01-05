@@ -143,6 +143,8 @@ const sendTaskAssignmentEmail = inngest.createFunction(
             where: {id: taskId},
             include: {assignee: true, project: true}
         })
+
+        console.log("Sending assignment email to:", task.assignee.email);
         await sendEmail({
             to: task.assignee.email, //reciever email
             subject: `New Task Assignment in ${task.project.name}`,
@@ -157,6 +159,7 @@ const sendTaskAssignmentEmail = inngest.createFunction(
                 `
 
         })
+        console.log("Assignment email sent!");
         if(new Date(task.due_date).toLocaleDateString() !== new Date().toDateString()){
             await step.sleepUntil('wait-for-the-due-date', new Date(task.due_date));
 
