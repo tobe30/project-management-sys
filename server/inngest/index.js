@@ -146,9 +146,16 @@ const sendTaskAssignmentEmail = inngest.createFunction(
         await sendEmail({
             to: task.assignee.email, //reciever email
             subject: `New Task Assignment in ${task.project.name}`,
-            body: `Hi ${task.assignee.name}` `${task.title}`//reciever name
-                     `${new Date(task.due_date).toLocaleDateString()}
-                     <a href=${origin}>View Task</a>`
+            body: `
+                Hi ${task.assignee.name},
+
+                You have been assigned a new task: "${task.title}"
+
+                Due date: ${new Date(task.due_date).toLocaleDateString()}
+
+                <a href="${origin}">View Task</a>
+                `
+
         })
         if(new Date(task.due_date).toLocaleDateString() !== new Date().toDateString()){
             await step.sleepUntil('wait-for-the-due-date', new Date(task.due_date));
@@ -165,8 +172,16 @@ const sendTaskAssignmentEmail = inngest.createFunction(
                         await sendEmail({
                             to: task.assignee.email, 
                             subject: `Reminder for ${task.project.name}`,
-                            body: `Hi ${task.assignee.name}` `This is a reminder that the task "${task.title}" was due on ${new Date(task.due_date).toLocaleDateString()}.
-                            <a href=${origin}>View Task</a> <p>Please complete it as soon as possible.</p>`
+                            body: `
+                            Hi ${task.assignee.name},
+
+                            This is a reminder that the task "${task.title}" was due on
+                            ${new Date(task.due_date).toLocaleDateString()}.
+
+                            <a href="${origin}">View Task</a>
+                            <p>Please complete it as soon as possible.</p>
+                            `
+
                         })
                     })
                 }
